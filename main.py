@@ -22,10 +22,15 @@ def request_forecast() -> list:
     return forecast_json["hourly"][:12]
 
 def check_for_rain(forecast) -> bool:
-    for hour in forecast:
-        condition_code = int(hour["weather"][0]["id"])
-        if condition_code < 700:
-            return True
+    try:
+        for hour in forecast:
+            condition_code = int(hour["weather"][0]["id"])
+            if condition_code < 700:
+                return True
+            else:
+                return False
+    except:
+        return False
 
 def main() -> None:
     forecast_next_12 = request_forecast()
