@@ -1,8 +1,9 @@
 # pyenv activate pyweather-3.11.2
 
 import pip._vendor.requests as requests
+import os
 
-API_KEY = "a8399132b50ffa51edbd9b19e1e3a8fa"
+API_KEY = os.environ.get("API_KEY")
 
 weather_params = {
     "lat": 42.9297,
