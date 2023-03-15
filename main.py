@@ -13,14 +13,14 @@ weather_params = {
 
 OWM_Endpoint = "https://api.openweathermap.org/data/2.8/onecall"
 
-def request_forecast():
+def request_forecast() -> list:
     forecast_response = requests.get(OWM_Endpoint,
                                     params=weather_params)
     forecast_response.raise_for_status()
     forecast_json = forecast_response.json()
     return forecast_json["hourly"][:12]
 
-def check_for_rain(forecast):
+def check_for_rain(forecast) -> bool:
     for hour in forecast:
         condition_code = int(hour["weather"][0]["id"])
         if condition_code < 700:
