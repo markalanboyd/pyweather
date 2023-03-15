@@ -2,7 +2,6 @@
 
 import pip._vendor.requests as requests
 
-
 API_KEY = "a8399132b50ffa51edbd9b19e1e3a8fa"
 
 weather_params = {
@@ -14,19 +13,25 @@ weather_params = {
 
 OWM_Endpoint = "https://api.openweathermap.org/data/2.8/onecall"
 
-forecast_response = requests.get(OWM_Endpoint,
-                                 params=weather_params)
-forecast_response.raise_for_status()
-forecast_json = forecast_response.json()
-
-forecast_next_12 = forecast_json["hourly"][0:12]
+def request_forecast():
+    forecast_response = requests.get(OWM_Endpoint,
+                                    params=weather_params)
+    forecast_response.raise_for_status()
+    forecast_json = forecast_response.json()
+    return forecast_json["hourly"][:12]
 
 def check_for_rain(forecast):
-    for hour in range(0,12):
-        if forecast_next_12[hour]["weather"][0]["id"] < 700:
+    for hour in forecast:
+        condition_code = int(hour["weather"][0]["id"])
+        if condition_code < 700:
             return True
 
-if check_for_rain(forecast_next_12):
-    print("Rain's a-comin'.")
-else:
-    print("Clear skies today.")
+def main() -> None:
+    forecast_next_12 = request_forecast()
+    if check_for_rain(forecast_next_12):
+        print("Rain's a-comin'.")
+    else:
+        print("Clear skies today.")
+
+if __name__ == "__main__":
+    main()
