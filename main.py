@@ -8,11 +8,9 @@ forecast_response = requests.get(API_URL)
 forecast_response_code = forecast_response.status_code
 forecast_json = forecast_response.json()
 
-print(forecast_response_code)
+forecast_next_24 = forecast_json["hourly"][0:25]
 
-forecast_next_24 = dict(forecast_json["hourly"][0:25])
-
-for hour in forecast_next_24:
+for hour in range(0,25):
     if forecast_next_24[hour]["weather"][0]["main"] == "Rain":
         print("Rain's a-comin'")
         break
